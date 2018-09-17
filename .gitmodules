@@ -1,0 +1,3 @@
+[submodule "talamel/taglib"]
+	path = talamel/taglib
+	url = git@github.com:taglib/taglib.git
