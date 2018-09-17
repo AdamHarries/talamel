@@ -1,4 +1,5 @@
-# TALAMEL: TA(g) L(ib) A(bstract) M(etadata) E(xtraction) L(ibrary)
+# TALAMEL: 
+# TA(g) L(ib) A(bstract) M(etadata) E(xtraction) L(ibrary)
 
 TALAMEL is designed to be a simple abstract interface to the C++ "taglib" library, primarily accessed through the Rust bindings. TALAMEL is built as a C wrapper library around taglib, with the aim of providing an abstract interface to audio metadata. In particular, TALAMEL aims to provide metadata not supplied by taglib's existing C api. 
 
