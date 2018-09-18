@@ -48,7 +48,19 @@ set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
 #     PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR}/talamel
 # )
 
+install(TARGETS talamel 
+    ARCHIVE  DESTINATION ${CMAKE_INSTALL_PREFIX}
+    LIBRARY  DESTINATION ${CMAKE_INSTALL_PREFIX}
+    RUNTIME  DESTINATION ${CMAKE_INSTALL_PREFIX})  # This is for Windows
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_PREFIX})
+# install(FILES ${CMAKE_SOURCE_DIR}/include/talamel.h DESTINATION ${CMAKE_INSTALL_PREFIX})
+
 # Add an app depending on that
 add_executable(Readmeta apps/readmeta.c)
 add_dependencies(Readmeta talamel)
 target_link_libraries(Readmeta talamel) 
+
+# Add an app depending on taglib
+add_executable(Metaprops apps/metaprops.cpp)
+add_dependencies(Metaprops taglib)
+target_link_libraries(Metaprops tag z)
