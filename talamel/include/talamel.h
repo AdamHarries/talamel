@@ -28,25 +28,25 @@ extern "C" {
 #define BOOL int
 #endif
 
-typedef struct { int empty; } TalamelFile;
+typedef struct { int empty; } tml_TalamelFile;
 
-void print_properties(const char* filename);
+TALAMEL_C_EXPORT tml_TalamelFile* tml_open_file(const char* filename); 
 
-TALAMEL_C_EXPORT TalamelFile* tml_open_file(const char* filename); 
+void tml_free_file(tml_TalamelFile* f);
 
-void tml_free_file(TalamelFile* f);
+void tml_free_str(char* str);
 
-void tml_print_properties(TalamelFile* tf);
+void tml_print_properties(tml_TalamelFile* tf);
 
-TALAMEL_C_EXPORT char * tml_read_title(TalamelFile* tf);
+TALAMEL_C_EXPORT char * tml_read_title(tml_TalamelFile* tf);
 
-TALAMEL_C_EXPORT char * tml_read_artist(TalamelFile* tf); 
+TALAMEL_C_EXPORT char * tml_read_artist(tml_TalamelFile* tf); 
 
-TALAMEL_C_EXPORT int tml_read_bpm(TalamelFile* tf);
+TALAMEL_C_EXPORT unsigned int tml_read_bpm(tml_TalamelFile* tf);
 
-TALAMEL_C_EXPORT int tml_count_comments(TalamelFile* tf); 
+TALAMEL_C_EXPORT unsigned int tml_count_comments(tml_TalamelFile* tf); 
 
-TALAMEL_C_EXPORT char * tml_get_comment(TalamelFile* tf, int comment);
+TALAMEL_C_EXPORT char * tml_get_comment(tml_TalamelFile* tf, int comment);
 
 #ifdef __cplusplus
 }

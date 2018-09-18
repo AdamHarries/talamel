@@ -31,22 +31,8 @@ target_include_directories(talamel
     ${CMAKE_SOURCE_DIR}/include
 )
 add_dependencies(talamel taglib)
-target_link_libraries(talamel tag z)
+target_link_libraries(talamel tag z stdc++)
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
-
-# Link in the c++ runtime here at some point?
-
-# set_target_properties(talamel PROPERTIES
-#     VERSION 0.0.0
-#     SOVERSION 0 
-#     DEFINE_SYMBOL MAKE_TALAMEL_C_LIB
-#     INSTALL_NAME_DIR ${LIB_INSTALL_DIR}
-# )
-# install(TARGETS talamel
-#     ARCHIVE DESTINATION ${LIB_INSTALL_DIR}
-#     LIBRARY DESTINATION ${LIB_INSTALL_DIR}
-#     PUBLIC_HEADER DESTINATION ${INCLUDE_INSTALL_DIR}/talamel
-# )
 
 install(TARGETS talamel 
     ARCHIVE  DESTINATION ${CMAKE_INSTALL_PREFIX}

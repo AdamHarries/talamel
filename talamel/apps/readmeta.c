@@ -3,7 +3,7 @@
 #include <talamel.h>
 
 void print_metadata(const char* filename) { 
-  TalamelFile* f = tml_open_file(filename); 
+  tml_TalamelFile* f = tml_open_file(filename); 
 
   char* title = tml_read_title(f); 
   printf("Title: %s\n", title); 

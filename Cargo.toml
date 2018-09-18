@@ -2,5 +2,16 @@
 name = "talamel"
 version = "0.1.0"
 authors = ["Adam Harries <adam.harries@codeplay.com>"]
+links= "talamel" 
+build = "build.rs" 
+
+[lib]
+name = "talamel"
+path = "src/lib.rs"
 
 [dependencies]
+libc = "0.2"
+
+[build-dependencies]
+bindgen = "0.37.0"
+cmake = "0.1.31"
