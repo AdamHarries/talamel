@@ -12,7 +12,7 @@ ExternalProject_Add(
     taglib 
     GIT_REPOSITORY https://www.github.com/taglib/taglib
     PREFIX ${TAGLIB_DIR} 
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=ON -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
         -DCMAKE_CXX_FLAGS=-fPIC -Wall -03
 )
 
@@ -46,7 +46,7 @@ target_include_directories(talamel
 add_dependencies(talamel taglib)
 # target_link_libraries(talamel -Wl,--whole-archive tag -Wl,--no-whole-archive)
 # target_link_libraries(talamel -Wl,-force_load tag z -Wl,-noforce_load)
-target_link_libraries(talamel tag z)
+target_link_libraries(talamel tag_c tag)
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
 set_target_properties(talamel PROPERTIES LINKER_LANGUAGE C)
 
