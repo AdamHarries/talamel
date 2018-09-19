@@ -36,7 +36,7 @@ target_include_directories(talamel
     ${CMAKE_SOURCE_DIR}/include
 )
 add_dependencies(talamel taglib)
-target_link_libraries(talamel tag z stdc++)
+target_link_libraries(talamel tag)
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
 
 
