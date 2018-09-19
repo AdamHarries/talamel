@@ -69,7 +69,7 @@ extern "C" void tml_print_properties(tml_TalamelFile *tf) {
 
 extern "C" char *tml_read_title(tml_TalamelFile *tf) {
   TagLib::PropertyMap properties = get_properties(tf);
-  auto sl = properties["TITLE"];
+  TagLib::StringList sl = properties["TITLE"];
   if(!(sl.size() > 0)) { 
     return nullptr;
   }
@@ -78,7 +78,7 @@ extern "C" char *tml_read_title(tml_TalamelFile *tf) {
 
 extern "C" char *tml_read_artist(tml_TalamelFile *tf){
 TagLib::PropertyMap properties = get_properties(tf);
-  auto sl = properties["ARTIST"];
+  TagLib::StringList sl = properties["ARTIST"];
   if(!(sl.size() > 0)) { 
     return nullptr;
   }
@@ -87,7 +87,7 @@ TagLib::PropertyMap properties = get_properties(tf);
 
 extern "C" unsigned int tml_read_bpm(tml_TalamelFile *tf){
 TagLib::PropertyMap properties = get_properties(tf);
-  auto sl = properties["BPM"];
+  TagLib::StringList sl = properties["BPM"];
   if(!(sl.size() > 0)) { 
     return 0;
   }else {
@@ -97,13 +97,13 @@ TagLib::PropertyMap properties = get_properties(tf);
 
 extern "C" unsigned int tml_count_comments(tml_TalamelFile *tf){
   TagLib::PropertyMap properties = get_properties(tf);
-  auto sl = properties["COMMENT"];
+  TagLib::StringList sl = properties["COMMENT"];
   return sl.size();
 }
 
 extern "C" char *tml_get_comment(tml_TalamelFile *tf, int comment){
   TagLib::PropertyMap properties = get_properties(tf);
-  auto sl = properties["COMMENT"];
+  TagLib::StringList sl = properties["COMMENT"];
   if(comment >= sl.size()){
     return nullptr;
   }else{

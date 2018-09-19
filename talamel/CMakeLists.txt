@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.0)
 
-project (TALAMEL)
+project(talamel)
 
 # Compile taglib
 include(ExternalProject)
@@ -11,7 +11,7 @@ set(TAGLIB_INSTALL "${TAGLIB_DIR}/install")
 
 ExternalProject_Add(
     taglib 
-    GIT_REPOSITORY git@github.com:taglib/taglib.git
+    GIT_REPOSITORY https://www.github.com/taglib/taglib
     PREFIX ${TAGLIB_DIR} 
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
 )
@@ -39,14 +39,8 @@ install(TARGETS talamel
     LIBRARY  DESTINATION ${CMAKE_INSTALL_PREFIX}
     RUNTIME  DESTINATION ${CMAKE_INSTALL_PREFIX})  # This is for Windows
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_PREFIX})
-# install(FILES ${CMAKE_SOURCE_DIR}/include/talamel.h DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-# Add an app depending on that
+# Add an example app depending on talamel
 add_executable(Readmeta apps/readmeta.c)
 add_dependencies(Readmeta talamel)
 target_link_libraries(Readmeta talamel) 
-
-# Add an app depending on taglib
-add_executable(Metaprops apps/metaprops.cpp)
-add_dependencies(Metaprops taglib)
-target_link_libraries(Metaprops tag z)
