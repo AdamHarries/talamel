@@ -25,7 +25,7 @@ fn main() {
         println!("cargo:rustc-flags=-l talamel -l tag -l z");
     } else if cfg!(target_os = "windows") {
         println!("cargo:rustc-flags=-l talamel -l tag_c -l tag -l stdc++");
-        println!("cargo:rustc-link-lib=zlib")
+        println!("cargo:rustc-link-lib=static=zlib")
     } else if cfg!(target_os = "linux") {
         println!("cargo:rustc-flags=-l talamel -l tag_c -l tag -l z -l stdc++");
     }
