@@ -24,8 +24,9 @@ fn main() {
         println!("cargo:rustc-link-lib=dylib=c++");
         println!("cargo:rustc-flags=-l talamel -l tag -l z");
     } else if cfg!(target_os = "windows") {
-        println!("cargo:rustc-flags=-l talamel -l tag_c -l tag -l zlib -l stdc++");
-    } else  {
+        println!("cargo:rustc-flags=-l talamel -l tag_c -l tag -l stdc++");
+        println!("cargo:rustc-link-lib=z")
+    } else if cfg!(target_os = "unix") {
         println!("cargo:rustc-flags=-l talamel -l tag_c -l tag -l z -l stdc++");
     }
     // create bindings for the static c library
