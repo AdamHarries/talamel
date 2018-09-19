@@ -21,7 +21,7 @@ fn main() {
     // link libc++, as the static linker doesn't, and we need it for the tag internals
     // and tell cargo to link the static library that it finds there!
     // if cfg!(target_os = "macos") {
-    //     println!("cargo:rustc-link-lib=dylib=c++");
+        println!("cargo:rustc-link-lib=dylib=c++");
     //     println!("cargo:rustc-flags=-l talamel -l tag -l z");
     // } else if cfg!(target_os = "windows") {
     //     println!("cargo:rustc-flags= -l talamel -l tag_c -l tag -l stdc++");
@@ -33,6 +33,7 @@ fn main() {
     //     // println!("cargo:rustc-flags=--Wl --whole-archive -l talamel -l stdc++");
     // }
     println!("cargo:rustc-link-lib=static=talamel");
+        println!("cargo:rustc-link-lib=dylib=c++");
     // create bindings for the static c library
     let header = dst.join("talamel.h");
     let bindings = bindgen::Builder::default()
