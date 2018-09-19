@@ -18,10 +18,15 @@ ExternalProject_Add(
 include_directories(${TAGLIB_INSTALL}/include)
 link_directories(${TAGLIB_INSTALL}/lib)
 
-# Add the talamel library
+# Decide on C/C++ standards
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+# Add the talamel library
 
 add_library(talamel STATIC
     src/talamel.cpp 
@@ -33,6 +38,7 @@ target_include_directories(talamel
 add_dependencies(talamel taglib)
 target_link_libraries(talamel tag z stdc++)
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
+
 
 install(TARGETS talamel 
     ARCHIVE  DESTINATION ${CMAKE_INSTALL_PREFIX}
