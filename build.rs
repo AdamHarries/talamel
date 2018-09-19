@@ -11,9 +11,6 @@ fn main() {
     let dst = Config::new("talamel")
         .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
         .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
-        .very_verbose(true)
-        .always_configure(true)
-        .uses_cxx11()
         .build();
 
     // tell cargo to look for it when trying to link
@@ -22,13 +19,18 @@ fn main() {
     // link libc++, as the static linker doesn't, and we need it for the tag internals
     // and tell cargo to link the static library that it finds there!
     if cfg!(target_os = "macos") { 
+        // we need to link libc++ and talamel in a slightly different way, which is annoying
         println!("cargo:rustc-link-lib=dylib=c++");
+        // link talamel, taglib and zlib
+        println!("cargo:rustc-flags=-l talamel -l tag -l z");
     }else {
+        // Otherwise, proceed as normal
         println!("cargo:rustc-flags=-l dylib=stdc++");
+        // link talamel
+        println!("cargo:rustc-flags=-l static=talamel");
+        // link taglib and zlib
+        println!("cargo:rustc-flags=-l tag_c -l tag -l z");
     }
-    println!("cargo:rustc-flags=-l talamel -l tag -l z"); 
-      
-
 
     // create bindings for the static c library
     let header = dst.join("talamel.h");
