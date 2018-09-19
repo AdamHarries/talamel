@@ -23,7 +23,7 @@
 /*
   Internal functions
 */
-char *stringToCharArray(const TagLib::String &s) {
+extern "C" char *stringToCharArray(const TagLib::String &s) {
   const std::string str = s.to8Bit(true);
 
 #ifdef HAVE_ISO_STRDUP
@@ -33,11 +33,11 @@ char *stringToCharArray(const TagLib::String &s) {
 #endif
 }
 
-TagLib::String charArrayToString(const char *s) {
+extern "C" TagLib::String charArrayToString(const char *s) {
   return TagLib::String(s, TagLib::String::UTF8);
 }
 
-TagLib::PropertyMap get_properties(tml_TalamelFile *tf) {
+extern "C" TagLib::PropertyMap get_properties(tml_TalamelFile *tf) {
   return reinterpret_cast<TagLib::File *>(tf)->properties();
 }
 

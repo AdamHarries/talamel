@@ -11,7 +11,6 @@ use std::ffi::CStr;
 use std::ffi::CString;
 use std::ffi::NulError;
 use std::os::raw::c_char;
-use std::os::raw::c_void;
 use std::path::PathBuf;
 use std::str::Utf8Error;
 
@@ -25,7 +24,8 @@ pub enum FileError {
     InvalidTagFile,
 }
 
-type StringReadError = Result<String, Utf8Error>;
+type StringReadResult = Result<String, Utf8Error>;
+type MultiStringReadResult = Result<Vec<String>, Utf8Error>;
 
 /* Define a file interface */
 #[derive(Debug)]
@@ -63,11 +63,11 @@ impl TalamelFile {
         }
     }
 
-    fn read_and_parse(c_string_pointer: *mut c_char) -> StringReadError {
+    fn read_and_parse(c_string_pointer: *mut c_char) -> StringReadResult {
         unsafe {
             let str_slice = CStr::from_ptr(c_string_pointer);
             // try and parse that ptr into a string
-            let str_res: StringReadError = str_slice.to_str().map(|s| s.to_owned());
+            let str_res: StringReadResult = str_slice.to_str().map(|s| s.to_owned());
             // free the pointer - TODO: Make this optional!
             tml_free_str(c_string_pointer);
             // and return the owned string
@@ -75,11 +75,11 @@ impl TalamelFile {
         }
     }
 
-    pub fn title(self: &Self) -> StringReadError {
+    pub fn title(self: &Self) -> StringReadResult {
         unsafe { Self::read_and_parse(tml_read_title(self.file_handle)) }
     }
 
-    pub fn artist(self: &Self) -> StringReadError {
+    pub fn artist(self: &Self) -> StringReadResult {
         unsafe { Self::read_and_parse(tml_read_artist(self.file_handle)) }
     }
 
@@ -91,6 +91,8 @@ impl TalamelFile {
             }
         }
     }
+
+    
 
 
 
