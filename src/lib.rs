@@ -83,18 +83,14 @@ impl TalamelFile {
         unsafe { Self::read_and_parse(tml_read_artist(self.file_handle)) }
     }
 
-    pub fn bpm(self: &Self) -> Option<u32> { 
+    pub fn bpm(self: &Self) -> Option<u32> {
         unsafe {
-            match tml_read_bpm(self.file_handle) { 
-                0 => None, 
+            match tml_read_bpm(self.file_handle) {
+                0 => None,
                 v => Some(v),
             }
         }
     }
-
-    
-
-
 
     // pub fn bpm(self: &Self) -> Option<u32> {
     //     unsafe {
