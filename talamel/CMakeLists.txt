@@ -12,8 +12,8 @@ ExternalProject_Add(
     taglib 
     GIT_REPOSITORY https://www.github.com/taglib/taglib
     PREFIX ${TAGLIB_DIR} 
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3 -Wl,--whole-archive -Wl,-Bstatic 
-        -DCMAKE_CXX_FLAGS=-fPIC -Wall -03 --whole-archive -Wl,-Bstatic
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
+        -DCMAKE_CXX_FLAGS=-fPIC -Wall -03
 )
 
 include_directories(${TAGLIB_INSTALL}/include)
@@ -44,8 +44,11 @@ target_include_directories(talamel
     ${CMAKE_SOURCE_DIR}/include
 )
 add_dependencies(talamel taglib)
-target_link_libraries(talamel tag)
+# target_link_libraries(talamel -Wl,--whole-archive tag -Wl,--no-whole-archive)
+# target_link_libraries(talamel -Wl,-force_load tag z -Wl,-noforce_load)
+target_link_libraries(talamel tag z)
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
+set_target_properties(talamel PROPERTIES LINKER_LANGUAGE C)
 
 
 install(TARGETS talamel 
@@ -55,6 +58,8 @@ install(TARGETS talamel
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 # Add an example app depending on talamel
-# add_executable(Readmeta apps/readmeta.c)
-# add_dependencies(Readmeta talamel)
-# target_link_libraries(Readmeta talamel) 
+add_executable(Readmeta apps/readmeta.c)
+add_dependencies(Readmeta talamel)
+set_source_files_properties(Readmeta LANGUAGE C)
+set_target_properties(Readmeta PROPERTIES LINKER_LANGUAGE C)
+target_link_libraries(Readmeta talamel) 

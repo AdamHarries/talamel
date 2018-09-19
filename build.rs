@@ -32,7 +32,7 @@ fn main() {
         
     //     // println!("cargo:rustc-flags=--Wl --whole-archive -l talamel -l stdc++");
     // }
-    println!("cargo:rustc-link-lib=static=talamel");
+    
     if cfg!(target_os = "macos") {
         println!("cargo:rustc-link-lib=dylib=c++");
     // } else if cfg!(target_os = "windows") {
@@ -40,6 +40,7 @@ fn main() {
     } else if cfg!(target_os = "linux") {
         println!("cargo:rustc-link-lib=dylib=stdc++");
     }
+    println!("cargo:rustc-link-lib=talamel");
     // create bindings for the static c library
     let header = dst.join("talamel.h");
     let bindings = bindgen::Builder::default()

@@ -29,15 +29,8 @@ void print_metadata(const char* filename) {
 }
 
 int main(int argc, char *argv[]) {
-  print_metadata("/home/adam/Music/Archive.org/Jumpin' at the "
-                    "Woodside - Count Basie And His Orchestra.mp3");
-  print_metadata(
-      "/home/adam/Music/iTunes/iTunes Media/Music/Michael Gamble/Michael "
-      "Gamble & the Rhythm Serenaders/19 Airmail Special.m4a");
-
-  print_metadata(
-    "/home/adam/Music/Dani Sicari & The Easy Rollers - Dani Sicari & The Easy Rollers/01 - Dani Sicari & The Easy Rollers - Some of these days.flac"
-  );
-
+  for(int i = 1; i< argc;i++) { 
+    print_metadata(argv[i]);
+  }
   return 0;
 }
