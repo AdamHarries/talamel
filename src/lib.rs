@@ -71,7 +71,6 @@ impl TalamelFile {
 
     fn read_and_parse(c_string_pointer: *mut c_char) -> StringReadResult {
         if c_string_pointer.is_null() {
-            error!("Cannot parse null pointer");
             return Err(StringError::NulPtr);
         }
         unsafe {
@@ -111,12 +110,6 @@ impl TalamelFile {
         }
     }
 
-    // TALAMEL_C_EXPORT unsigned int tml_count_properties(tml_TalamelFile* tf, const char* key);
-
-    // TALAMEL_C_EXPORT char * tml_read_property(tml_TalamelFile* tf, const char* key, unsigned int ix);
-
-    // TALAMEL_C_EXPORT char * tml_read_property_z(tml_TalamelFile* tf, const char* key);
-
     pub fn title(self: &Self) -> StringReadResult {
         unsafe { Self::read_and_parse(tml_read_title(self.file_handle)) }
     }
@@ -149,15 +142,6 @@ impl TalamelFile {
             return Ok(v);
         }
     }
-
-    // pub fn bpm(self: &Self) -> Option<u32> {
-    //     unsafe {
-    //         match taglib_tag_bpm(self.tag) {
-    //             0 => None,
-    //             v => Some(v),
-    //         }
-    //     }
-    // }
 }
 
 impl Drop for TalamelFile {
