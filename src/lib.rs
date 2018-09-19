@@ -60,6 +60,7 @@ impl TalamelFile {
             
             // Check to see if the file pointer is valid
             if file_ptr.is_null() {
+                debug!("Got null file pointer (bad filename, or bad tags?)");
                 return Err(FileError::InvalidTagFile);
             }
             return Ok(TalamelFile {
@@ -71,6 +72,7 @@ impl TalamelFile {
 
     fn read_and_parse(c_string_pointer: *mut c_char) -> StringReadResult {
         if c_string_pointer.is_null() {
+            debug!("Got null c string");
             return Err(StringError::NulPtr);
         }
         unsafe {

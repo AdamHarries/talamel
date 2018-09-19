@@ -5,7 +5,6 @@ project(talamel)
 # Compile taglib
 include(ExternalProject)
 
-# set(TALAMEL_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(TAGLIB_DIR "${CMAKE_BINARY_DIR}/taglib")
 set(TAGLIB_INSTALL "${TAGLIB_DIR}/install")
 
@@ -20,11 +19,12 @@ include_directories(${TAGLIB_INSTALL}/include)
 link_directories(${TAGLIB_INSTALL}/lib)
 
 # Add the talamel library
-# set(talamel_headers talamel.h)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(talamel STATIC
     src/talamel.cpp 
-    # ${talamel_headers}
 )
 target_include_directories(talamel
     PUBLIC 
