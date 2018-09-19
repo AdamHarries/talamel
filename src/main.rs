@@ -15,9 +15,13 @@ fn main() {
 }
 
 fn print_metadata<P: Into<PathBuf> + Debug>(filename: P) -> () {
-    println!("Reading from : {:?}", filename);
-
-    let f: TalamelFile = TalamelFile::new(filename).unwrap();
+    let f: TalamelFile = match TalamelFile::new(filename) {
+        Ok(f) => f, 
+        e => { 
+            println!("Got error {:?} while opening file!", e);
+            return;
+        }
+    };
 
     match f.title() {
         Ok(t) => println!("Title: {}", t),

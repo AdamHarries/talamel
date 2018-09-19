@@ -44,7 +44,10 @@ extern "C" TagLib::PropertyMap get_properties(tml_TalamelFile *tf) {
   Library interface
 */
 extern "C" tml_TalamelFile *tml_open_file(const char *filename) {
-  return reinterpret_cast<tml_TalamelFile *>(TagLib::FileRef::create(filename));
+  TagLib::File * f = TagLib::FileRef::create(filename);
+  if (!f->isValid()) 
+    return nullptr; 
+  return reinterpret_cast<tml_TalamelFile *>(f);
 }
 
 extern "C" void tml_free_file(tml_TalamelFile *f) {
