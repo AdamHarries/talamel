@@ -12,8 +12,8 @@ ExternalProject_Add(
     taglib 
     GIT_REPOSITORY https://www.github.com/taglib/taglib
     PREFIX ${TAGLIB_DIR} 
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3 --whole-archive 
-        -DCMAKE_CXX_FLAGS=-fPIC -Wall -03 --whole-archive
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3 -Wl,--whole-archive -Wl,-Bstatic 
+        -DCMAKE_CXX_FLAGS=-fPIC -Wall -03 --whole-archive -Wl,-Bstatic
 )
 
 include_directories(${TAGLIB_INSTALL}/include)
