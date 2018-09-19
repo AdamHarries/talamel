@@ -21,12 +21,21 @@ fn print_metadata<P: Into<PathBuf> + Debug>(filename: P) -> () {
 
     match f.title() {
         Ok(t) => println!("Title: {}", t),
-        _ => println!("Could not read title!"),
+        e => println!("Could not read title, got error: {:?}", e),
     }
 
     match f.artist() {
         Ok(a) => println!("Artist: {}", a),
-        _ => println!("Could not read artist!"),
+        e => println!("Could not read artist, got error: {:?}", e),
+    }
+
+    match f.read_property_values("ALBUM") {
+        Ok(vs) => {
+            for v in vs {
+                println!("Album: {}", v);
+            }
+        }
+        e => println!("Could not read album, got error: {:?}", e),
     }
 
     match f.comments() {
@@ -35,6 +44,6 @@ fn print_metadata<P: Into<PathBuf> + Debug>(filename: P) -> () {
                 println!("Comment: {:?}", comm);
             }
         }
-        _ => println!("Could not read comments!"),
+        e => println!("Could not read comments, got error: {:?}", e),
     }
 }

@@ -1,6 +1,5 @@
 #include <stdlib.h>
 
-
 #include <string.h>
 #include <taglib/asffile.h>
 #include <taglib/fileref.h>
@@ -52,61 +51,65 @@ extern "C" void tml_free_file(tml_TalamelFile *f) {
   delete reinterpret_cast<TagLib::File *>(f);
 }
 
-extern "C" void tml_free_str(char* str) { 
-  delete str;
+extern "C" void tml_free_str(char *str) { delete str; }
+
+extern "C" unsigned int tml_count_property_values(tml_TalamelFile *tf,
+                                                  const char *key) {
+  TagLib::PropertyMap properties = get_properties(tf);
+  TagLib::StringList sl = properties[key];
+  return sl.size();
 }
 
-extern "C" void tml_print_properties(tml_TalamelFile *tf) {
-  // Reinterpret as a File
-  TagLib::File *f = reinterpret_cast<TagLib::File *>(tf);
-  TagLib::PropertyMap properties = f->properties();
-
-  for (auto pair = properties.begin(); pair != properties.end(); pair++) {
-    std::cout << "Key: " << pair->first << ", value(s): " << pair->second
-              << std::endl;
+extern "C" char *tml_read_property_value(tml_TalamelFile *tf, const char *key,
+                                         unsigned int ix) {
+  TagLib::PropertyMap properties = get_properties(tf);
+  TagLib::StringList sl = properties[key];
+  if (!(sl.size() > 0) || ix >= sl.size()) {
+    return nullptr;
   }
+  return stringToCharArray(sl[ix]);
 }
 
 extern "C" char *tml_read_title(tml_TalamelFile *tf) {
   TagLib::PropertyMap properties = get_properties(tf);
   TagLib::StringList sl = properties["TITLE"];
-  if(!(sl.size() > 0)) { 
+  if (!(sl.size() > 0)) {
     return nullptr;
   }
   return stringToCharArray(sl[0]);
 }
 
-extern "C" char *tml_read_artist(tml_TalamelFile *tf){
-TagLib::PropertyMap properties = get_properties(tf);
+extern "C" char *tml_read_artist(tml_TalamelFile *tf) {
+  TagLib::PropertyMap properties = get_properties(tf);
   TagLib::StringList sl = properties["ARTIST"];
-  if(!(sl.size() > 0)) { 
+  if (!(sl.size() > 0)) {
     return nullptr;
   }
   return stringToCharArray(sl[0]);
 }
 
-extern "C" unsigned int tml_read_bpm(tml_TalamelFile *tf){
-TagLib::PropertyMap properties = get_properties(tf);
+extern "C" unsigned int tml_read_bpm(tml_TalamelFile *tf) {
+  TagLib::PropertyMap properties = get_properties(tf);
   TagLib::StringList sl = properties["BPM"];
-  if(!(sl.size() > 0)) { 
+  if (!(sl.size() > 0)) {
     return 0;
-  }else {
+  } else {
     return stoi(sl[0].to8Bit(true));
   }
 }
 
-extern "C" unsigned int tml_count_comments(tml_TalamelFile *tf){
+extern "C" unsigned int tml_count_comments(tml_TalamelFile *tf) {
   TagLib::PropertyMap properties = get_properties(tf);
   TagLib::StringList sl = properties["COMMENT"];
   return sl.size();
 }
 
-extern "C" char *tml_get_comment(tml_TalamelFile *tf, unsigned int comment){
+extern "C" char *tml_get_comment(tml_TalamelFile *tf, unsigned int comment) {
   TagLib::PropertyMap properties = get_properties(tf);
   TagLib::StringList sl = properties["COMMENT"];
-  if(comment >= sl.size()){
+  if (comment >= sl.size()) {
     return nullptr;
-  }else{
+  } else {
     return stringToCharArray(sl[comment]);
   }
 }

@@ -18,8 +18,9 @@ extern "C" {
 #else
 #define TALAMEL_C_EXPORT __declspec(dllimport)
 #endif
-#elif defined(__GNUC__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 1)
-#define TALAMEL_C_EXPORT __attribute__ ((visibility("default")))
+#elif defined(__GNUC__) &&                                                     \
+    (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 1)
+#define TALAMEL_C_EXPORT __attribute__((visibility("default")))
 #else
 #define TALAMEL_C_EXPORT
 #endif
@@ -28,25 +29,32 @@ extern "C" {
 #define BOOL int
 #endif
 
-typedef struct { int empty; } tml_TalamelFile;
+typedef struct {
+  int empty;
+} tml_TalamelFile;
 
-TALAMEL_C_EXPORT tml_TalamelFile* tml_open_file(const char* filename); 
+TALAMEL_C_EXPORT tml_TalamelFile *tml_open_file(const char *filename);
 
-void tml_free_file(tml_TalamelFile* f);
+void tml_free_file(tml_TalamelFile *f);
 
-void tml_free_str(char* str);
+void tml_free_str(char *str);
 
-void tml_print_properties(tml_TalamelFile* tf);
+TALAMEL_C_EXPORT unsigned int tml_count_property_values(tml_TalamelFile *tf,
+                                                        const char *key);
 
-TALAMEL_C_EXPORT char * tml_read_title(tml_TalamelFile* tf);
+TALAMEL_C_EXPORT char *
+tml_read_property_value(tml_TalamelFile *tf, const char *key, unsigned int ix);
 
-TALAMEL_C_EXPORT char * tml_read_artist(tml_TalamelFile* tf); 
+TALAMEL_C_EXPORT char *tml_read_title(tml_TalamelFile *tf);
 
-TALAMEL_C_EXPORT unsigned int tml_read_bpm(tml_TalamelFile* tf);
+TALAMEL_C_EXPORT char *tml_read_artist(tml_TalamelFile *tf);
 
-TALAMEL_C_EXPORT unsigned int tml_count_comments(tml_TalamelFile* tf); 
+TALAMEL_C_EXPORT unsigned int tml_read_bpm(tml_TalamelFile *tf);
 
-TALAMEL_C_EXPORT char * tml_get_comment(tml_TalamelFile* tf, unsigned int comment);
+TALAMEL_C_EXPORT unsigned int tml_count_comments(tml_TalamelFile *tf);
+
+TALAMEL_C_EXPORT char *tml_get_comment(tml_TalamelFile *tf,
+                                       unsigned int comment);
 
 #ifdef __cplusplus
 }

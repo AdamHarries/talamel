@@ -24,8 +24,16 @@ pub enum FileError {
     InvalidTagFile,
 }
 
-type StringReadResult = Result<String, Utf8Error>;
-type MultiStringReadResult = Result<Vec<String>, Utf8Error>;
+#[derive(Debug)]
+pub enum StringError {
+    StringAsStr,
+    NulPtr,
+    Utf8Err(Utf8Error),
+    NullString(NulError),
+}
+
+type StringReadResult = Result<String, StringError>;
+type MultiStringReadResult = Result<Vec<String>, StringError>;
 
 /* Define a file interface */
 #[derive(Debug)]
@@ -41,9 +49,7 @@ impl TalamelFile {
             .into()
             .to_str()
             .ok_or(FileError::PathAsString)
-            .and_then(|filename| {
-                CString::new(filename).map_err(|err| FileError::NullPathString(err))
-            })?;
+            .and_then(|filename| CString::new(filename).map_err(FileError::NullPathString))?;
 
         unsafe {
             // try to open the file using the ffi
@@ -64,16 +70,51 @@ impl TalamelFile {
     }
 
     fn read_and_parse(c_string_pointer: *mut c_char) -> StringReadResult {
+        if c_string_pointer.is_null() {
+            return Err(StringError::NulPtr);
+        }
         unsafe {
             let str_slice = CStr::from_ptr(c_string_pointer);
             // try and parse that ptr into a string
-            let str_res: StringReadResult = str_slice.to_str().map(|s| s.to_owned());
+            let str_res: StringReadResult = str_slice
+                .to_str()
+                .map(|s| s.to_owned())
+                .map_err(StringError::Utf8Err);
             // free the pointer - TODO: Make this optional!
             tml_free_str(c_string_pointer);
             // and return the owned string
             str_res
         }
     }
+
+    pub fn read_property_values<S: Into<String>>(self: &Self, key: S) -> MultiStringReadResult {
+        let cs_key = CString::new(key.into().as_str()).map_err(StringError::NullString)?;
+
+        unsafe {
+            // count the number of values for the key
+            let pcnt = tml_count_property_values(self.file_handle, cs_key.as_ptr());
+
+            let mut v: Vec<String> = Vec::with_capacity(pcnt as usize);
+            for i in 0..pcnt {
+                let comment = Self::read_and_parse(tml_read_property_value(
+                    self.file_handle,
+                    cs_key.as_ptr(),
+                    i as u32,
+                ));
+                match comment {
+                    Ok(s) => v.push(s),
+                    Err(e) => return Err(e),
+                }
+            }
+            return Ok(v);
+        }
+    }
+
+    // TALAMEL_C_EXPORT unsigned int tml_count_properties(tml_TalamelFile* tf, const char* key);
+
+    // TALAMEL_C_EXPORT char * tml_read_property(tml_TalamelFile* tf, const char* key, unsigned int ix);
+
+    // TALAMEL_C_EXPORT char * tml_read_property_z(tml_TalamelFile* tf, const char* key);
 
     pub fn title(self: &Self) -> StringReadResult {
         unsafe { Self::read_and_parse(tml_read_title(self.file_handle)) }
@@ -98,7 +139,7 @@ impl TalamelFile {
 
             let mut v: Vec<String> = Vec::with_capacity(comment_count as usize);
             for i in 0..comment_count {
-                let comment = Self::read_and_parse(tml_get_comment(self.file_handle, i));
+                let comment = Self::read_and_parse(tml_get_comment(self.file_handle, i as u32));
                 match comment {
                     Ok(s) => v.push(s),
                     Err(e) => return Err(e),
