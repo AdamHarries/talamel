@@ -35,8 +35,8 @@ fn main() {
     println!("cargo:rustc-link-lib=static=talamel");
     if cfg!(target_os = "macos") {
         println!("cargo:rustc-link-lib=dylib=c++");
-    } else if cfg!(target_os = "windows") {
-        println!("cargo:rustc-link-lib=dylib=stdc++");
+    // } else if cfg!(target_os = "windows") {
+        // println!("cargo:rustc-link-lib=dylib=stdc++");
     } else if cfg!(target_os = "linux") {
         println!("cargo:rustc-link-lib=dylib=stdc++");
     }
