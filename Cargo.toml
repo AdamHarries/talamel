@@ -2,13 +2,14 @@
 name = "talamel"
 version = "0.1.0"
 authors = ["Adam Harries <adam.harries@codeplay.com>"]
-links= "talamel" 
+
+links = "talamel"
 build = "build.rs" 
 
 [lib]
 name = "talamel"
 path = "src/lib.rs"
-links = "talamel"
+
 
 [dependencies]
 libc = "0.2"
