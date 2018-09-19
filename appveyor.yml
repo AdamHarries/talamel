@@ -102,6 +102,7 @@ matrix:
 # For simple configurations, instead of using the build matrix, you can simply set the
 # default-toolchain and default-host manually here.
 install:
+  - powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/horta/zlib.install/master/install.bat', 'install.bat')" && install.bat
   - appveyor DownloadFile https://win.rustup.rs/ -FileName rustup-init.exe
   - rustup-init -yv --default-toolchain %channel% --default-host %target%
   - set PATH=%PATH%;%USERPROFILE%\.cargo\bin
