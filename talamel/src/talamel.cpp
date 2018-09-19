@@ -101,7 +101,7 @@ extern "C" unsigned int tml_count_comments(tml_TalamelFile *tf){
   return sl.size();
 }
 
-extern "C" char *tml_get_comment(tml_TalamelFile *tf, int comment){
+extern "C" char *tml_get_comment(tml_TalamelFile *tf, unsigned int comment){
   TagLib::PropertyMap properties = get_properties(tf);
   TagLib::StringList sl = properties["COMMENT"];
   if(comment >= sl.size()){

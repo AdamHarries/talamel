@@ -46,7 +46,7 @@ TALAMEL_C_EXPORT unsigned int tml_read_bpm(tml_TalamelFile* tf);
 
 TALAMEL_C_EXPORT unsigned int tml_count_comments(tml_TalamelFile* tf); 
 
-TALAMEL_C_EXPORT char * tml_get_comment(tml_TalamelFile* tf, int comment);
+TALAMEL_C_EXPORT char * tml_get_comment(tml_TalamelFile* tf, unsigned int comment);
 
 #ifdef __cplusplus
 }

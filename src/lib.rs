@@ -92,6 +92,22 @@ impl TalamelFile {
         }
     }
 
+    pub fn comments(self: &Self) -> MultiStringReadResult {
+        unsafe {
+            let comment_count = tml_count_comments(self.file_handle);
+
+            let mut v: Vec<String> = Vec::with_capacity(comment_count as usize);
+            for i in 0..comment_count {
+                let comment = Self::read_and_parse(tml_get_comment(self.file_handle, i));
+                match comment {
+                    Ok(s) => v.push(s),
+                    Err(e) => return Err(e),
+                }
+            }
+            return Ok(v);
+        }
+    }
+
     // pub fn bpm(self: &Self) -> Option<u32> {
     //     unsafe {
     //         match taglib_tag_bpm(self.tag) {
