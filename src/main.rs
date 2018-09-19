@@ -4,15 +4,12 @@ use std::path::PathBuf;
 
 use talamel::*;
 
+use std::env;
 
 fn main() {
-    print_metadata("/home/adam/Music/Archive.org/Jumpin' at the Woodside - Count Basie And His Orchestra.mp3");
-  print_metadata(
-      "/home/adam/Music/iTunes/iTunes Media/Music/Michael Gamble/Michael Gamble & the Rhythm Serenaders/19 Airmail Special.m4a");
-
-  print_metadata(
-    "/home/adam/Music/Dani Sicari & The Easy Rollers - Dani Sicari & The Easy Rollers/01 - Dani Sicari & The Easy Rollers - Some of these days.flac"
-  );
+    for arg in env::args().skip(1) { 
+        print_metadata(arg);
+    }
 }
 
 fn print_metadata<P: Into<PathBuf>>(filename: P) -> () { 
