@@ -4,6 +4,9 @@
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
+#[macro_use]
+extern crate log;
+
 extern crate libc;
 
 // // std library imports
@@ -54,23 +57,21 @@ impl TalamelFile {
         unsafe {
             // try to open the file using the ffi
             let file_ptr = tml_open_file(cs_filename.as_ptr());
-            // Todo: Should the struct member be a reference instead?
+            
+            // Check to see if the file pointer is valid
             if file_ptr.is_null() {
-                return Err(FileError::OpenFailure);
-            } else {
-                // Check to see if the file pointer is valid
-                if file_ptr.is_null() {
-                    return Err(FileError::InvalidTagFile);
-                }
-                return Ok(TalamelFile {
-                    file_handle: file_ptr,
-                });
+                return Err(FileError::InvalidTagFile);
             }
+            return Ok(TalamelFile {
+                file_handle: file_ptr,
+            });
+            
         }
     }
 
     fn read_and_parse(c_string_pointer: *mut c_char) -> StringReadResult {
         if c_string_pointer.is_null() {
+            error!("Cannot parse null pointer");
             return Err(StringError::NulPtr);
         }
         unsafe {
