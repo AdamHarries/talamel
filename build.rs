@@ -25,11 +25,6 @@ fn main() {
         println!("cargo:rustc-flags=-l talamel -l tag -l z");
     } else {
         println!("cargo:rustc-flags=-l talamel -l tag_c -l tag -l z -l stdc++");
-        // println!("cargo:rustc-flags=-l dylib=stdc++");
-        // link talamel
-        // println!("cargo:rustc-flags=-l static=talamel");
-        // link taglib and zlib
-        // println!("cargo:rustc-flags=-l tag_c -l tag -l z");
     }
     // create bindings for the static c library
     let header = dst.join("talamel.h");
