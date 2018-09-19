@@ -1,0 +1,22 @@
+language: rust
+
+cache: cargo
+
+os:
+  - linux
+  - osx
+
+rust: 
+  - stable
+
+install:
+  - if [ $TRAVIS_OS_NAME = linux ]; then cargo install --force cargo-deb; fi
+
+script: 
+  - cargo build --release -vv
+  - cargo test --release --all -vv
+
+matrix:
+  allow_failures:
+    - rust: nightly
+  fast_finish: true
