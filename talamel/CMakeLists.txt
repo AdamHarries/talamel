@@ -47,6 +47,6 @@ install(TARGETS talamel
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 # Add an example app depending on talamel
-add_executable(Readmeta apps/readmeta.c)
-add_dependencies(Readmeta talamel)
-target_link_libraries(Readmeta talamel) 
+# add_executable(Readmeta apps/readmeta.c)
+# add_dependencies(Readmeta talamel)
+# target_link_libraries(Readmeta talamel) 
