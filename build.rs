@@ -18,12 +18,13 @@ fn main() {
         "cargo:rustc-link-search={}/build/taglib/install/lib",
         dst.display()
     );
-    
+
     println!("cargo:rustc-link-lib=talamel");
     println!("cargo:rustc-link-lib=tag_c");
     println!("cargo:rustc-link-lib=tag");
     if cfg!(target_os = "macos") { 
-    println!("cargo:rustc-link-lib=c++");
+        println!("cargo:rustc-link-lib=c++");
+    else if cfg!(target_os = "windows") {
     } else {
         println!("cargo:rustc-link-lib=stdc++");
     }
