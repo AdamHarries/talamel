@@ -20,8 +20,6 @@ fn main() {
     );
 
     println!("cargo:rustc-link-lib=static=talamel");
-    // println!("cargo:rustc-link-lib=static=tag_c");
-    println!("cargo:rustc-link-lib=static=tag");
     if cfg!(target_os = "macos") { 
         println!("cargo:rustc-link-lib=c++");
     } else if cfg!(target_os = "windows") {
