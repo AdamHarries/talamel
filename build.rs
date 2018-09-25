@@ -19,9 +19,10 @@ fn main() {
         dst.display()
     );
 
-    println!("cargo:rustc-link-lib=talamel");
-    println!("cargo:rustc-link-lib=tag_c");
-    println!("cargo:rustc-link-lib=tag");
+    println!("cargo:rustc-link-lib=static=talamel");
+    println!("cargo:rustc-link-lib=static=tag_c");
+    println!("cargo:rustc-link-lib=static=tag");
+    println!("cargo:rustc-link-lib=z");
     if cfg!(target_os = "macos") { 
         println!("cargo:rustc-link-lib=c++");
     } else if cfg!(target_os = "windows") {
