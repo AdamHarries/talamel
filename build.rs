@@ -19,7 +19,8 @@ fn main() {
         dst.display()
     );
     println!(
-        "cargo:rustc-link-search=/usr/lib/x86_64-linux-gnu/"
+        "cargo:rustc-link-search={}/build/zlib/install/lib",
+        dst.display()
     );
 
     println!("cargo:rustc-link-lib=static=talamel");

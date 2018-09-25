@@ -5,13 +5,35 @@ project(talamel)
 # Compile taglib
 include(ExternalProject)
 
-set(TAGLIB_DIR "${CMAKE_BINARY_DIR}/taglib")
-set(TAGLIB_INSTALL "${TAGLIB_DIR}/install")
+set(ZLIB_PREFIX "${CMAKE_BINARY_DIR}/zlib")
+set(ZLIB_INSTALL "${ZLIB_PREFIX}/install")
+
+ExternalProject_Add(zlib
+    PREFIX ${ZLIB_PREFIX}
+    GIT_REPOSITORY "https://github.com/madler/zlib"
+    GIT_TAG "v1.2.8"
+    UPDATE_COMMAND ""
+    BUILD_IN_SOURCE 1
+    CONFIGURE_COMMAND ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
+    INSTALL_DIR ${ZLIB_INSTALL}
+#    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+#               -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL}
+#               -DAMD64=ON
+    LOG_DOWNLOAD 1
+    LOG_INSTALL 1
+    )
+
+include_directories(${ZLIB_INSTALL}/include)
+link_directories(${ZLIB_INSTALL}/lib)
+# set(ZLIB_LIB ${ZLIB_INSTALL}/lib/libz.a)
+
+set(TAGLIB_PREFIX "${CMAKE_BINARY_DIR}/taglib")
+set(TAGLIB_INSTALL "${TAGLIB_PREFIX}/install")
 
 ExternalProject_Add(
     taglib 
     GIT_REPOSITORY https://www.github.com/taglib/taglib
-    PREFIX ${TAGLIB_DIR} 
+    PREFIX ${TAGLIB_PREFIX} 
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
         -DCMAKE_CXX_FLAGS=-fPIC -Wall -03
 )
@@ -34,7 +56,7 @@ if(MSVC)
 endif()
 
 # Get zlib.
-find_package(ZLIB REQUIRED)
+# find_package(ZLIB REQUIRED)
 
 # Add the talamel library
 add_library(talamel STATIC
