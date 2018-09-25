@@ -43,18 +43,27 @@ if(MSVC)
   set(ZLIB_STATIC_LIBRARY
       debug ${ZLIB_INSTALL}/lib/zlibstaticd.lib
       optimized ${ZLIB_INSTALL}/lib/zlibstatic.lib)
+  set(TAGLIB_STATIC_LIBRARY
+      debug ${TAGLIB_INSTALL}/lib/tagd.lib
+      optimized ${TAGLIB_INSTALL}/lib/tag.lib)
 else()
   if(CMAKE_BUILD_TYPE EQUAL Debug)
     set(ZLIB_STATIC_LIBRARY
         ${ZLIB_INSTALL}/lib/zlibstaticd.lib)
+    set(TAGLIB_STATIC_LIBRARY
+        ${TAGLIB_INSTALL}/lib/tagd.lib)
   else()
     set(ZLIB_STATIC_LIBRARY
         ${ZLIB_INSTALL}/lib/zlibstatic.lib)
+    set(TAGLIB_STATIC_LIBRARY
+        ${TAGLIB_INSTALL}/lib/tag.lib)
   endif()
 endif()
 else()
-set(ZLIB_STATIC_LIBRARY
-    ${ZLIB_INSTALL}/lib/libz.a)
+    set(ZLIB_STATIC_LIBRARY
+        ${ZLIB_INSTALL}/lib/libz.a)
+    set(TAGLIB_STATIC_LIBRARY
+        ${TAGLIB_INSTALL}/lib/libtag.a)
 endif()
 
 # Decide on C/C++ standards
@@ -83,7 +92,7 @@ target_include_directories(talamel
     ${CMAKE_SOURCE_DIR}/include
 )
 add_dependencies(talamel taglib zlib)
-target_link_libraries(talamel PUBLIC tag_c tag ${ZLIB_STATIC_LIBRARY})
+target_link_libraries(talamel PUBLIC ${TAGLIB_STATIC_LIBRARY} ${ZLIB_STATIC_LIBRARY})
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
 set_target_properties(talamel PROPERTIES LINKER_LANGUAGE C)
 
