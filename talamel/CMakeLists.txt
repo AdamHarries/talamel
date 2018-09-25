@@ -14,14 +14,14 @@ ExternalProject_Add(
     GIT_TAG "v1.2.11"
     PREFIX ${ZLIB_PREFIX}
     UPDATE_COMMAND ""
-    # CONFIGURE_COMMAND ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
+    CONFIGURE_COMMAND CFLAGS="-fPIC -Wall -O3" ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
     # INSTALL_DIR ${ZLIB_INSTALL}
-   CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-              -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL}
-              -DAMD64=ON
-              -DCMAKE_POSITION_INDEPENDENT_CODE=true
-              -DCMAKE_C_FLAGS=-fPIC -Wall -O3
-              -DCMAKE_CXX_FLAGS=-fPIC -Wall -O3
+#    CMAKE_ARGS
+#               -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL}
+#               -DAMD64=ON
+#               -DCMAKE_POSITION_INDEPENDENT_CODE=true
+#               -DCMAKE_C_FLAGS=-fPIC -Wall -O3
+#               -DCMAKE_CXX_FLAGS=-fPIC -Wall -O3
     LOG_DOWNLOAD 1
     LOG_INSTALL 1
 )
