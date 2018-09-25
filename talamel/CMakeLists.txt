@@ -8,12 +8,12 @@ include(ExternalProject)
 set(ZLIB_PREFIX "${CMAKE_BINARY_DIR}/zlib")
 set(ZLIB_INSTALL "${ZLIB_PREFIX}/install")
 
-ExternalProject_Add(zlib
-    PREFIX ${ZLIB_PREFIX}
+ExternalProject_Add(
+    zlib
     GIT_REPOSITORY "https://github.com/madler/zlib"
     GIT_TAG "v1.2.8"
+    PREFIX ${ZLIB_PREFIX}
     UPDATE_COMMAND ""
-    BUILD_IN_SOURCE 1
     # CONFIGURE_COMMAND ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
     # INSTALL_DIR ${ZLIB_INSTALL}
    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
