@@ -8,8 +8,38 @@ include(ExternalProject)
 set(ZLIB_PREFIX "${CMAKE_BINARY_DIR}/zlib")
 set(ZLIB_INSTALL "${ZLIB_PREFIX}/install")
 
+ExternalProject_Add(
+    zlib
+    GIT_REPOSITORY "https://github.com/madler/zlib"
+    GIT_TAG "v1.2.11"
+    PREFIX ${ZLIB_PREFIX}
+    INSTALL_DIR ${ZLIB_INSTALL}
+    BUILD_IN_SOURCE 1
+    BUILD_BYPRODUCTS ${ZLIB_STATIC_LIBRARY}
+    CMAKE_CACHE_ARGS
+          -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
+          -DCMAKE_BUILD_TYPE:STRING=Release
+          -DCMAKE_INSTALL_PREFIX:STRING=${ZLIB_INSTALL}
+)
+
+include_directories(${ZLIB_INSTALL}/include)
+
+set(TAGLIB_PREFIX "${CMAKE_BINARY_DIR}/taglib")
+set(TAGLIB_INSTALL "${TAGLIB_PREFIX}/install")
+
+ExternalProject_Add(
+    taglib 
+    GIT_REPOSITORY https://www.github.com/taglib/taglib
+    PREFIX ${TAGLIB_PREFIX} 
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
+        -DCMAKE_CXX_FLAGS=-fPIC -Wall -03
+)
+
+include_directories(${TAGLIB_INSTALL}/include)
+# link_directories(${TAGLIB_INSTALL}/lib)
+
 if(WIN32)
-if(${CMAKE_GENERATOR} MATCHES "Visual Studio.*")
+if(MSVC)
   set(ZLIB_STATIC_LIBRARY
       debug ${ZLIB_INSTALL}/lib/zlibstaticd.lib
       optimized ${ZLIB_INSTALL}/lib/zlibstatic.lib)
@@ -28,46 +58,6 @@ set(ZLIB_STATIC_LIBRARY
 endif()
 
 
-ExternalProject_Add(
-    zlib
-    GIT_REPOSITORY "https://github.com/madler/zlib"
-    GIT_TAG "v1.2.11"
-    PREFIX ${ZLIB_PREFIX}
-    INSTALL_DIR ${ZLIB_INSTALL}
-    BUILD_IN_SOURCE 1
-    BUILD_BYPRODUCTS ${ZLIB_STATIC_LIBRARY}
-    CMAKE_CACHE_ARGS
-          -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
-          -DCMAKE_BUILD_TYPE:STRING=Release
-          -DCMAKE_INSTALL_PREFIX:STRING=${ZLIB_INSTALL}
-    # CONFIGURE_COMMAND CFLAGS="-fPIC -Wall -O3" ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
-    
-#    CMAKE_ARGS
-#               -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL}
-#               -DAMD64=ON
-#               -DCMAKE_POSITION_INDEPENDENT_CODE=true
-#               -DCMAKE_C_FLAGS=-fPIC -Wall -O3
-#               -DCMAKE_CXX_FLAGS=-fPIC -Wall -O3
-)
-
-
-include_directories(${ZLIB_INSTALL}/include)
-# link_directories(${ZLIB_INSTALL}/lib)
-# set(ZLIB_LIB ${ZLIB_INSTALL}/lib/libz.a)
-
-set(TAGLIB_PREFIX "${CMAKE_BINARY_DIR}/taglib")
-set(TAGLIB_INSTALL "${TAGLIB_PREFIX}/install")
-
-ExternalProject_Add(
-    taglib 
-    GIT_REPOSITORY https://www.github.com/taglib/taglib
-    PREFIX ${TAGLIB_PREFIX} 
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
-        -DCMAKE_CXX_FLAGS=-fPIC -Wall -03
-)
-
-include_directories(${TAGLIB_INSTALL}/include)
-link_directories(${TAGLIB_INSTALL}/lib)
 
 # Decide on C/C++ standards
 set(CMAKE_CXX_STANDARD 11)
