@@ -11,7 +11,7 @@ set(ZLIB_INSTALL "${ZLIB_PREFIX}/install")
 ExternalProject_Add(
     zlib
     GIT_REPOSITORY "https://github.com/madler/zlib"
-    GIT_TAG "v1.2.8"
+    GIT_TAG "v1.2.11"
     PREFIX ${ZLIB_PREFIX}
     UPDATE_COMMAND ""
     # CONFIGURE_COMMAND ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
@@ -19,11 +19,31 @@ ExternalProject_Add(
    CMAKE_ARGS -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
               -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL}
               -DAMD64=ON
+              -DCMAKE_POSITION_INDEPENDENT_CODE=true
               -DCMAKE_C_FLAGS=-fPIC -Wall -O3
               -DCMAKE_CXX_FLAGS=-fPIC -Wall -O3
     LOG_DOWNLOAD 1
     LOG_INSTALL 1
-    )
+)
+
+if(WIN32)
+if(${CMAKE_GENERATOR} MATCHES "Visual Studio.*")
+  set(ZLIB_STATIC_LIBRARY
+      debug ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstaticd.lib
+      optimized ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstatic.lib)
+else()
+  if(CMAKE_BUILD_TYPE EQUAL Debug)
+    set(ZLIB_STATIC_LIBRARY
+        ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstaticd.lib)
+  else()
+    set(ZLIB_STATIC_LIBRARY
+        ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstatic.lib)
+  endif()
+endif()
+else()
+set(ZLIB_STATIC_LIBRARY
+    ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/libz.a)
+endif()
 
 include_directories(${ZLIB_INSTALL}/include)
 link_directories(${ZLIB_INSTALL}/lib)
@@ -69,7 +89,7 @@ target_include_directories(talamel
     ${CMAKE_SOURCE_DIR}/include
 )
 add_dependencies(talamel taglib)
-target_link_libraries(talamel PUBLIC tag_c tag z)
+target_link_libraries(talamel PUBLIC tag_c tag ${ZLIB_STATIC_LIBRARY})
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
 set_target_properties(talamel PROPERTIES LINKER_LANGUAGE C)
 
