@@ -29,24 +29,24 @@ ExternalProject_Add(
 if(WIN32)
 if(${CMAKE_GENERATOR} MATCHES "Visual Studio.*")
   set(ZLIB_STATIC_LIBRARY
-      debug ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstaticd.lib
-      optimized ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstatic.lib)
+      debug ${ZLIB_INSTALL}/lib/zlibstaticd.lib
+      optimized ${ZLIB_INSTALL}/lib/zlibstatic.lib)
 else()
   if(CMAKE_BUILD_TYPE EQUAL Debug)
     set(ZLIB_STATIC_LIBRARY
-        ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstaticd.lib)
+        ${ZLIB_INSTALL}/lib/zlibstaticd.lib)
   else()
     set(ZLIB_STATIC_LIBRARY
-        ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstatic.lib)
+        ${ZLIB_INSTALL}/lib/zlibstatic.lib)
   endif()
 endif()
 else()
 set(ZLIB_STATIC_LIBRARY
-    ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/libz.a)
+    ${ZLIB_INSTALL}/lib/libz.a)
 endif()
 
 include_directories(${ZLIB_INSTALL}/include)
-link_directories(${ZLIB_INSTALL}/lib)
+# link_directories(${ZLIB_INSTALL}/lib)
 # set(ZLIB_LIB ${ZLIB_INSTALL}/lib/libz.a)
 
 set(TAGLIB_PREFIX "${CMAKE_BINARY_DIR}/taglib")
