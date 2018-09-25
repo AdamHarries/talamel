@@ -33,9 +33,10 @@ if(MSVC)
   endforeach(flag_var)
 endif()
 
+# Get zlib.
+find_package(ZLIB REQUIRED)
 
 # Add the talamel library
-
 add_library(talamel STATIC
     src/talamel.cpp 
 )
