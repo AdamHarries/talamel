@@ -8,24 +8,6 @@ include(ExternalProject)
 set(ZLIB_PREFIX "${CMAKE_BINARY_DIR}/zlib")
 set(ZLIB_INSTALL "${ZLIB_PREFIX}/install")
 
-ExternalProject_Add(
-    zlib
-    GIT_REPOSITORY "https://github.com/madler/zlib"
-    GIT_TAG "v1.2.11"
-    PREFIX ${ZLIB_PREFIX}
-    UPDATE_COMMAND ""
-    CONFIGURE_COMMAND CFLAGS="-fPIC -Wall -O3" ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
-    # INSTALL_DIR ${ZLIB_INSTALL}
-#    CMAKE_ARGS
-#               -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL}
-#               -DAMD64=ON
-#               -DCMAKE_POSITION_INDEPENDENT_CODE=true
-#               -DCMAKE_C_FLAGS=-fPIC -Wall -O3
-#               -DCMAKE_CXX_FLAGS=-fPIC -Wall -O3
-    LOG_DOWNLOAD 1
-    LOG_INSTALL 1
-)
-
 if(WIN32)
 if(${CMAKE_GENERATOR} MATCHES "Visual Studio.*")
   set(ZLIB_STATIC_LIBRARY
@@ -44,6 +26,30 @@ else()
 set(ZLIB_STATIC_LIBRARY
     ${ZLIB_INSTALL}/lib/libz.a)
 endif()
+
+
+ExternalProject_Add(
+    zlib
+    GIT_REPOSITORY "https://github.com/madler/zlib"
+    GIT_TAG "v1.2.11"
+    PREFIX ${ZLIB_PREFIX}
+    INSTALL_DIR ${ZLIB_INSTALL}
+    BUILD_IN_SOURCE 1
+    BUILD_BYPRODUCTS ${ZLIB_STATIC_LIBRARY}
+    CMAKE_CACHE_ARGS
+          -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
+          -DCMAKE_BUILD_TYPE:STRING=Release
+          -DCMAKE_INSTALL_PREFIX:STRING=${ZLIB_INSTALL}
+    # CONFIGURE_COMMAND CFLAGS="-fPIC -Wall -O3" ${ZLIB_PREFIX}/src/zlib/configure --prefix=${ZLIB_INSTALL} --static
+    
+#    CMAKE_ARGS
+#               -DCMAKE_INSTALL_PREFIX=${ZLIB_INSTALL}
+#               -DAMD64=ON
+#               -DCMAKE_POSITION_INDEPENDENT_CODE=true
+#               -DCMAKE_C_FLAGS=-fPIC -Wall -O3
+#               -DCMAKE_CXX_FLAGS=-fPIC -Wall -O3
+)
+
 
 include_directories(${ZLIB_INSTALL}/include)
 # link_directories(${ZLIB_INSTALL}/lib)
@@ -88,7 +94,7 @@ target_include_directories(talamel
     PUBLIC 
     ${CMAKE_SOURCE_DIR}/include
 )
-add_dependencies(talamel taglib)
+add_dependencies(talamel taglib zlib)
 target_link_libraries(talamel PUBLIC tag_c tag ${ZLIB_STATIC_LIBRARY})
 set_target_properties(talamel PROPERTIES PUBLIC_HEADER "${talamel_headers}")
 set_target_properties(talamel PROPERTIES LINKER_LANGUAGE C)
