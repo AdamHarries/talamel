@@ -36,7 +36,7 @@ ExternalProject_Add(
 )
 
 include_directories(${TAGLIB_INSTALL}/include)
-# link_directories(${TAGLIB_INSTALL}/lib)
+link_directories(${TAGLIB_INSTALL}/lib)
 
 if(WIN32)
 if(MSVC)
@@ -56,8 +56,6 @@ else()
 set(ZLIB_STATIC_LIBRARY
     ${ZLIB_INSTALL}/lib/libz.a)
 endif()
-
-
 
 # Decide on C/C++ standards
 set(CMAKE_CXX_STANDARD 11)
