@@ -31,7 +31,7 @@ ExternalProject_Add(
     taglib 
     GIT_REPOSITORY https://www.github.com/taglib/taglib
     PREFIX ${TAGLIB_PREFIX} 
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
         -DCMAKE_CXX_FLAGS=-fPIC -Wall -03
 )
 
@@ -44,7 +44,7 @@ if(MSVC)
       debug ${ZLIB_INSTALL}/lib/zlibstaticd.lib
       optimized ${ZLIB_INSTALL}/lib/zlibstatic.lib)
   set(TAGLIB_STATIC_LIBRARY
-      debug ${TAGLIB_INSTALL}/lib/tagd.lib
+      debug ${TAGLIB_INSTALL}/lib/tag.lib
       optimized ${TAGLIB_INSTALL}/lib/tag.lib)
 else()
   if(CMAKE_BUILD_TYPE EQUAL Debug)
