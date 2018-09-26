@@ -104,10 +104,10 @@ install(TARGETS talamel
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 # Add an example app depending on talamel
-add_executable(Readmeta apps/readmeta.c)
-add_dependencies(Readmeta talamel)
-set_source_files_properties(Readmeta LANGUAGE C)
-set_target_properties(Readmeta PROPERTIES LINKER_LANGUAGE C)
-set_target_properties(Readmeta PROPERTIES COMPILE_FLAGS -DBUILDER_STATIC_DEFINE)
-set_target_properties(Readmeta PROPERTIES COMPILE_DEFINITIONS BUILDER_STATIC_DEFINE)
-target_link_libraries(Readmeta ${TAGLIB_STATIC_LIBRARY} ${ZLIB_STATIC_LIBRARY} talamel) 
+# add_executable(Readmeta apps/readmeta.c)
+# add_dependencies(Readmeta talamel)
+# set_source_files_properties(Readmeta LANGUAGE C)
+# set_target_properties(Readmeta PROPERTIES LINKER_LANGUAGE C)
+# set_target_properties(Readmeta PROPERTIES COMPILE_FLAGS -DBUILDER_STATIC_DEFINE)
+# set_target_properties(Readmeta PROPERTIES COMPILE_DEFINITIONS BUILDER_STATIC_DEFINE)
+# target_link_libraries(Readmeta ${TAGLIB_STATIC_LIBRARY} ${ZLIB_STATIC_LIBRARY} talamel) 
