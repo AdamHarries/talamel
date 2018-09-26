@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#define TAGLIB_STATIC
+
 #include <talamel.h>
 
 void print_metadata(const char* filename) { 
