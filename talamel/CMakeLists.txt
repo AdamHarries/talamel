@@ -31,7 +31,7 @@ ExternalProject_Add(
     taglib 
     GIT_REPOSITORY https://www.github.com/taglib/taglib
     PREFIX ${TAGLIB_PREFIX} 
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON -DCMAKE_C_FLAGS=-fPIC -Wall -O3
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${TAGLIB_INSTALL} -DBUILD_SHARED_LIBS=OFF -DENABLE_STATIC_RUNTIME=ON          -DCMAKE_C_FLAGS=-fPIC -Wall -O3
         -DCMAKE_CXX_FLAGS=-fPIC -Wall -03
 )
 
@@ -108,4 +108,4 @@ add_executable(Readmeta apps/readmeta.c)
 add_dependencies(Readmeta talamel)
 set_source_files_properties(Readmeta LANGUAGE C)
 set_target_properties(Readmeta PROPERTIES LINKER_LANGUAGE C)
-target_link_libraries(Readmeta talamel) 
+target_link_libraries(Readmeta talamel ${TAGLIB_STATIC_LIBRARY} ${ZLIB_STATIC_LIBRARY}) 
