@@ -14,20 +14,31 @@ fn main() {
         .build();
     // tell cargo to look for it when trying to link
     println!("cargo:rustc-link-search={}", dst.display());
-    println!(
-        "cargo:rustc-link-search={}/build/taglib/install/lib",
-        dst.display()
-    );
-    println!(
-        "cargo:rustc-link-search={}/build/zlib/install/lib",
-        dst.display()
-    );
+    if cfg!(target_os = "windows") {
+        println!(
+            "cargo:rustc-link-search={}\\build\\taglib\\install\\lib",
+            dst.display()
+        );
+        println!(
+            "cargo:rustc-link-search={}\\build\\zlib\\install\\lib",
+            dst.display()
+        );
+    } else {
+        println!(
+            "cargo:rustc-link-search={}/build/taglib/install/lib",
+            dst.display()
+        );
+        println!(
+            "cargo:rustc-link-search={}/build/zlib/install/lib",
+            dst.display()
+        );
+    }
 
     println!("cargo:rustc-link-lib=static=talamel");
     println!("cargo:rustc-link-lib=static=tag_c");
     println!("cargo:rustc-link-lib=static=tag");
     println!("cargo:rustc-link-lib=static=z");
-    if cfg!(target_os = "macos") { 
+    if cfg!(target_os = "macos") {
         println!("cargo:rustc-link-lib=c++");
     } else if cfg!(target_os = "windows") {
     } else {
