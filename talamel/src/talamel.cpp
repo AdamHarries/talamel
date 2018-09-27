@@ -1,5 +1,7 @@
 #include <stdlib.h>
 
+#define TAGLIB_STATIC
+
 #include <string.h>
 #include <taglib/asffile.h>
 #include <taglib/fileref.h>

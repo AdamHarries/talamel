@@ -9,23 +9,43 @@ use std::path::PathBuf;
 fn main() {
     // tell cargo to build our taglib branch
     let dst = Config::new("talamel")
-        .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
-        .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
+        .static_crt(true)
+        .very_verbose(true)
+        // .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
+        // .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
         .build();
     // tell cargo to look for it when trying to link
     println!("cargo:rustc-link-search={}", dst.display());
-    println!(
-        "cargo:rustc-link-search={}/build/taglib/install/lib",
-        dst.display()
-    );
+    // if cfg!(target_os = "windows") {
+    //     println!(
+    //         "cargo:rustc-link-search={}\\build\\taglib\\install\\lib",
+    //         dst.display()
+    //     );
+    //     println!(
+    //         "cargo:rustc-link-search={}\\build\\zlib\\install\\lib",
+    //         dst.display()
+    //     );
+    // } else {
+        println!(
+            "cargo:rustc-link-search={}/build/taglib/install/lib",
+            dst.display()
+        );
+        println!(
+            "cargo:rustc-link-search={}/build/zlib/install/lib",
+            dst.display()
+        );
+    // }
 
-    println!("cargo:rustc-link-lib=talamel");
-    println!("cargo:rustc-link-lib=tag_c");
-    println!("cargo:rustc-link-lib=tag");
-    if cfg!(target_os = "macos") { 
+    println!("cargo:rustc-link-lib=static=talamel");
+    println!("cargo:rustc-link-lib=static=tag_c");
+    println!("cargo:rustc-link-lib=static=tag");
+    if cfg!(target_os = "macos") {
+        println!("cargo:rustc-link-lib=static=z");
         println!("cargo:rustc-link-lib=c++");
     } else if cfg!(target_os = "windows") {
+        println!("cargo:rustc-link-lib=static=zlib");
     } else {
+        println!("cargo:rustc-link-lib=static=z");
         println!("cargo:rustc-link-lib=stdc++");
     }
 
