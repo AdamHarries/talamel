@@ -9,6 +9,8 @@ use std::path::PathBuf;
 fn main() {
     // tell cargo to build our taglib branch
     let dst = Config::new("talamel")
+        .static_crt(true)
+        .very_verbose(true)
         // .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
         // .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
         .build();
