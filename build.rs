@@ -25,7 +25,7 @@ fn main() {
     //         "cargo:rustc-link-search={}\\build\\zlib\\install\\lib",
     //         dst.display()
     //     );
-    } else {
+    // } else {
         println!(
             "cargo:rustc-link-search={}/build/taglib/install/lib",
             dst.display()
@@ -34,7 +34,7 @@ fn main() {
             "cargo:rustc-link-search={}/build/zlib/install/lib",
             dst.display()
         );
-    }
+    // }
 
     println!("cargo:rustc-link-lib=static=talamel");
     println!("cargo:rustc-link-lib=static=tag_c");
