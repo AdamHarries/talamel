@@ -8,6 +8,12 @@ include(ExternalProject)
 
 IF(MSVC)
     SET(CMAKE_CXX_FLAGS "/EHsc")
+
+  foreach(flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+    string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+  endforeach(flag_var)
+endif()
+
 ENDIF(MSVC)
 
 set(ZLIB_PREFIX "${CMAKE_BINARY_DIR}/zlib")
@@ -79,11 +85,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# if(MSVC)
-#   foreach(flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-#     string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-#   endforeach(flag_var)
-# endif()
+if(MSVC)
+  foreach(flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+    string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+  endforeach(flag_var)
+endif()
 
 # Get zlib.
 # find_package(ZLIB REQUIRED)
