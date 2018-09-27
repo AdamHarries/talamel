@@ -5,6 +5,11 @@ project(talamel)
 # Compile taglib
 include(ExternalProject)
 
+
+IF(MSVC)
+    SET(CMAKE_CXX_FLAGS "/EHsc")
+ENDIF(MSVC)
+
 set(ZLIB_PREFIX "${CMAKE_BINARY_DIR}/zlib")
 set(ZLIB_INSTALL "${ZLIB_PREFIX}/install")
 
