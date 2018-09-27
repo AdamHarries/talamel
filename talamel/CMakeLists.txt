@@ -1,5 +1,11 @@
 cmake_minimum_required (VERSION 3.0)
 
+set(CMAKE_USER_MAKE_RULES_OVERRIDE
+   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/c_flag_overrides.cmake)
+set(CMAKE_USER_MAKE_RULES_OVERRIDE_CXX
+   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cxx_flag_overrides.cmake)
+
+
 project(talamel)
 
 # Compile taglib
@@ -13,8 +19,6 @@ IF(MSVC)
     string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
   endforeach(flag_var)
 endif()
-
-ENDIF(MSVC)
 
 set(ZLIB_PREFIX "${CMAKE_BINARY_DIR}/zlib")
 set(ZLIB_INSTALL "${ZLIB_PREFIX}/install")
