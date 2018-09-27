@@ -9,8 +9,8 @@ use std::path::PathBuf;
 fn main() {
     // tell cargo to build our taglib branch
     let dst = Config::new("talamel")
-        .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
-        .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
+        // .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
+        // .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
         .build();
     // tell cargo to look for it when trying to link
     println!("cargo:rustc-link-search={}", dst.display());
