@@ -57,7 +57,7 @@ impl TalamelFile {
         unsafe {
             // try to open the file using the ffi
             let file_ptr = tml_open_file(cs_filename.as_ptr());
-            
+
             // Check to see if the file pointer is valid
             if file_ptr.is_null() {
                 debug!("Got null file pointer (bad filename, or bad tags?)");
@@ -66,7 +66,6 @@ impl TalamelFile {
             return Ok(TalamelFile {
                 file_handle: file_ptr,
             });
-            
         }
     }
 

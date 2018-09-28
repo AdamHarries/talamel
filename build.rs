@@ -11,40 +11,38 @@ fn main() {
     let dst = Config::new("talamel")
         .static_crt(true)
         .very_verbose(true)
-        // .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
-        // .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
+        .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
+        .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
         .build();
-    // tell cargo to look for it when trying to link
+    // tell cargo to look for talamel, taglib, and zlib
+    // Specifically, specify the paths.
     println!("cargo:rustc-link-search={}", dst.display());
-    // if cfg!(target_os = "windows") {
-    //     println!(
-    //         "cargo:rustc-link-search={}\\build\\taglib\\install\\lib",
-    //         dst.display()
-    //     );
-    //     println!(
-    //         "cargo:rustc-link-search={}\\build\\zlib\\install\\lib",
-    //         dst.display()
-    //     );
-    // } else {
-        println!(
-            "cargo:rustc-link-search={}/build/taglib/install/lib",
-            dst.display()
-        );
-        println!(
-            "cargo:rustc-link-search={}/build/zlib/install/lib",
-            dst.display()
-        );
-    // }
+    println!(
+        "cargo:rustc-link-search={}/build/taglib/install/lib",
+        dst.display()
+    );
+    println!(
+        "cargo:rustc-link-search={}/build/zlib/install/lib",
+        dst.display()
+    );
 
+    // Link talamel, tag_c, tag, zlib, and the c++ runtime.
     println!("cargo:rustc-link-lib=static=talamel");
     println!("cargo:rustc-link-lib=static=tag_c");
     println!("cargo:rustc-link-lib=static=tag");
-    if cfg!(target_os = "macos") {
+    
+    if cfg!(target_os = "windows") {
+        // If we're linking for windows, we don't need to link 
+        // the C++ runtime, as it's done for us above
+        // zlib is also named differently.
+        println!("cargo:rustc-link-lib=static=zlib");
+    } else if cfg!(target_os = "macos") {
+        // On OSX we do need to, and it's called 'C++'
+        // link zlib as standard on unix.
         println!("cargo:rustc-link-lib=static=z");
         println!("cargo:rustc-link-lib=c++");
-    } else if cfg!(target_os = "windows") {
-        println!("cargo:rustc-link-lib=static=zlib");
     } else {
+        // We also need to link it on Linux - it's called 'stdc++'
         println!("cargo:rustc-link-lib=static=z");
         println!("cargo:rustc-link-lib=stdc++");
     }
@@ -58,6 +56,7 @@ fn main() {
         .generate()
         // Unwrap the Result and panic on failure.
         .expect("Unable to generate bindings");
+
     // Write the bindings to the $OUT_DIR/bindings.rs file.
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
     bindings
