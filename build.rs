@@ -11,8 +11,8 @@ fn main() {
     let dst = Config::new("talamel")
         .static_crt(true)
         .very_verbose(true)
-        // .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
-        // .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
+        .define("CMAKE_C_FLAGS", "-fPIC -Wall -O3")
+        .define("CMAKE_CXX_FLAGS", "-fPIC -Wall -O3")
         .build();
     // tell cargo to look for it when trying to link
     println!("cargo:rustc-link-search={}", dst.display());
@@ -26,14 +26,14 @@ fn main() {
     //         dst.display()
     //     );
     // } else {
-        println!(
-            "cargo:rustc-link-search={}/build/taglib/install/lib",
-            dst.display()
-        );
-        println!(
-            "cargo:rustc-link-search={}/build/zlib/install/lib",
-            dst.display()
-        );
+    println!(
+        "cargo:rustc-link-search={}/build/taglib/install/lib",
+        dst.display()
+    );
+    println!(
+        "cargo:rustc-link-search={}/build/zlib/install/lib",
+        dst.display()
+    );
     // }
 
     println!("cargo:rustc-link-lib=static=talamel");

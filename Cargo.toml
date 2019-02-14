@@ -1,18 +1,21 @@
 [package]
 name = "talamel"
-version = "0.1.0"
-authors = ["Adam Harries <adam.harries@codeplay.com>"]
+version = "0.2.0"
+authors = ["Adam Harries <harries.adam@gmail.com>"]
 build = "build.rs" 
+readme = "README.md"
+license = "GPL-3.0-or-later"
+description = "TALAMEL: TA(g) L(ib) A(bstract) M(etadata) E(xtraction) L(ibrary), a simple C wrapper around taglib, designed for FFI use from rust"
 
 [lib]
 name = "talamel"
 path = "src/lib.rs"
-
 
 [dependencies]
 libc = "0.2"
 log = "0.4"
 
 [build-dependencies]
-bindgen = "0.37.0"
-cmake = "0.1.31"
+bindgen = "0.47.1"
+cmake = "0.1.35"
+
